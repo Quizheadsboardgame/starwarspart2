@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HARRY POTTER</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
+            text-align: center;
+        }
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="George Michael Logo">
+    <h1>STAR WARS: PART ONE</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+</div>
+
+<script>
+    // Question and answers data
+    const quizData = [
+     { question: "What planet is Obi-Wan Kenobi from?", answer: "Stewjon" },
+        { question: "What actress played Princess Leia in Star Wars: Return of the Jedi?", answer: "Carrie Fisher" },
+        { question: "What planet is Rey from?", answer: "Jakku" },
+        { question: "What color is R2-D2?", answer: "Blue and white" },
+        { question: "What planet is Padme Amidala from?", answer: "Naboo" },
+        { question: "True or false: R2-D2 originally had dialogue, with actual speaking parts.", answer: "True!" },
+        { question: "Variations on what line have made it into every film in the saga?", answer: "\"I have a bad feeling about this.\"" },
+        { question: "What type of dog was the inspiration for Chewbacca according to George Lucas?", answer: "An Alaskan Malamute" },
+        { question: "The first appearance of the Emperor was a composite of the character designer's wife and which animal?", answer: "A chimpanzee" },
+        { question: "How many estimated deaths are there in the original trilogy?", answer: "Approximately 2,002,795,192" },
+        { question: "Which episode number is the first Star Wars film?", answer: "IV" },
+        { question: "What was Han Solo frozen in?", answer: "Carbonite" },
+        { question: "How long was Han Sole frozen for?", answer: "About one year" },
+        { question: "How many \"forms of communication\" is C-3PO fluent in?", answer: "Over 6 million" },
+        { question: "Where does Rey find Luke Skywalker?", answer: "Ahch-To" },
+        { question: "Who killed Mace Windu?", answer: "Darth Sidious" },
+        { question: "What is the name of Anakin's stepbrother?", answer: "Owen Lars" },
+        { question: "Who was Boba Fett's father?", answer: "Jango Fett" },
+        { question: "What was Galen Erso's nickname for his daughter?", answer: "Stardust" },
+        { question: "What is the name of the female member of the Jedi High Council who is of the same species as Yoda?", answer: "Yaddle" },
+        { question: "What model of aircraft did Luke use to \"bullseye Womp Rats\"?", answer: "T-16 skyhopper" },
+        { question: "Han Solo boasted that the Millennium Falcon made the Kessel Run in less than how many parsecs?", answer: "12 parsecs" },
+        { question: "Who was the first character to speak in the first Star Wars film, A New Hope?", answer: "C-3PO" },
+        { question: "Princess Leia tells Grand Moff Tarkin the rebel base is located on what planet?", answer: "Dantooine" },
+        { question: "Who was Luke Skywalker's gunner during the Battle of Hoth?", answer: "Dak Ralter" },
+        { question: "What species is Greedo?", answer: "Rodian" },
+        { question: "In which movie did Yoda NOT appear in any form?", answer: "A New Hope" },
+        { question: "In what system are Han and Leia before traveling to Bespin?", answer: "Anoat" },
+        { question: "What species is native to Endor?", answer: "Ewok" },
+        { question: "Which actor is the only one who's appeared in every single Star Wars movie to date?", answer: "Anthony Daniels (C-3PO)" },
+        { question: "Which stormtrooper wasn't able to complete his mission in Star Wars: The Force Awakens?", answer: "FN-2187" },
+        { question: "What were Padmé's last words?", answer: "\"Obi-Wan...there...is good in him. I know there is.\"" },
+        { question: "What kind of vehicle did Rey live in?", answer: "An AT-AT" },
+        { question: "According to Master Yoda, how many Sith are always out there?", answer: "Two" },
+        { question: "What happened to Anakin Skywalker during his first battle against Count Dooku?", answer: "He lost his right arm." },
+        { question: "Who played the part of Commander Cody?", answer: "Temuera Morrison" },
+        { question: "Who wiped out all of the information about Kamino from the Jedi Temple archives?", answer: "Count Dooku" },
+        { question: "Who killed Jabba?", answer: "Princess Leia" },
+        { question: "What did Luke Skywalker lose in his fight with Darth Vader?", answer: "His right hand" },
+        { question: "What did Jar Jar Binks end up owing Qui-Gon Jinn after being rescued during the invasion of Naboo?", answer: "An honor debt" },
+        { question: "What did Owen Lars tell Luke about his father?", answer: "He was a navigator on a spice freighter." },
+        { question: "What is the color of C-3PO's arm in Star Wars: The Force Awakens?", answer: "Red" },
+        { question: "Where did the Clone Wars begin?", answer: "Geonosis" },
+        { question: "Who adopted Padmé Amidala's daughter?", answer: "Bail Organa" },
+        { question: "What was the job that Finn told Han Solo he had at Starkiller Base?", answer: "Sanitation" },
+        { question: "Where were the Hoth sequences filmed?", answer: "Norway" },
+        { question: "What name does Obi-Wan Kenobi go by on Tatooine?", answer: "Ben" },
+        { question: "How old was Anakin during the battle on Geonosis?", answer: "20" },
+        { question: "Who freed Princess Leia from her chains at Jabba's palace?", answer: "R2-D2" },
+        { question: "How did Luke manage to get into Jabba's palace?", answer: "He used an ancient Jedi mind trick on Bib Fortuna." },
+        { question: "Who first and most famously played the part of Chewbacca?", answer: "Peter Mayhew" },
+        { question: "Who fixed the hyperdrive on the Millennium Falcon?", answer: "R2-D2" },
+        { question: "Who killed Jango Fett?", answer: "Mace Windu" },
+        { question: "What species was Yoda?", answer: "Yoda's species is unknown" },
+        { question: "Who are the comedians behind the \"voice\" for BB-8?", answer: "Ben Schwartz and Bill Hader" },
+        { question: "When Obi-Wan performed the blood test on Anakin, how high was the Midi-chlorian count?", answer: "More than 20,000" },
+        { question: "According to the Emperor, what was Luke's weakness?", answer: "His faith in his friends" },
+        { question: "Which bounty hunter was trying to capture Han when Greedo arrived first?", answer: "Danz Borin" },
+        { question: "Who taught Lando Calrissian how to pilot a ship?", answer: "Han Solo" },
+        { question: "How many lightsabers does General Grievous wield in his fight with Obi-Wan on Utapau?", answer: "Four" },
+        { question: "Who offered to lead the attack against the Death Star?", answer: "Lando Calrissian" },
+        { question: "What species is Chewbacca?", answer: "Wookiee" },
+        { question: "What did Darth Vader say to Luke about the name \"Anakin Skywalker\"?", answer: "That it no longer held any meaning for him." },
+        { question: "What did the Ewoks think C-3PO was?", answer: "A god" },
+        { question: "What did R2-D2 realize about C-3PO when they first met?", answer: "C-3PO was naked." },
+        { question: "What was the diameter of the first Death Star?", answer: "120 kilometers" },
+        { question: "According to Obi-Wan, how long had the Jedi been the guardians of peace and justice in the galaxy?", answer: "For more than 1,000 generations" },
+        { question: "What was the name of the standard rifle carried by the clone troopers?", answer: "DC-15A" },
+        { question: "Count Dooku was one of how many Jedi who had left the Jedi Order?", answer: "20" },
+        { question: "Who joined Poe Dameron in his X-wing in order to help destroy Starkiller?", answer: "BB-8" },
+        { question: "What kind of weapon did Han carry?", answer: "A DL-44 pistol" },
+        { question: "Who gave FN-2187 his new name when they found out that he didn't have a real name?", answer: "Poe Dameron" },
+        { question: "According to Yoda, what did Luke need to do in order to complete his training and become a Jedi Master?", answer: "Confront Darth Vader again" },
+        { question: "Who provided the voice for General Grievous?", answer: "Matthew Wood" },
+        { question: "How many rathtars did Han and Chewbacca have on their ship?", answer: "Three" },
+        { question: "What mission did Princess Leia give to Obi-Wan?", answer: "Take R2-D2 to Alderaan" },
+        { question: "How did Yoda feel about Obi-Wan having Anakin as his Padawan?", answer: "He didn't agree with it." },
+        { question: "What is the maximum number of womp rats that are usually seen in a pack?", answer: "20" },
+        { question: "According to Yoda, what is the path to the dark side?", answer: "Fear" },
+        { question: "What was Grand Moff Tarkin's impression of Leia's presence on board the Death Star?", answer: "Charming" },
+        { question: "How many meals does Jabba consume per day?", answer: "Nine" },
+        { question: "What did Yoda tell Obi-Wan after the latter said, \"That boy is our last hope\"?", answer: "\"No, there is another.\"" },
+        { question: "Who provided the voice of Darth Vader?", answer: "James Earl Jones" },
+        { question: "Who said, \"This is how liberty dies — to thunderous applause\"?", answer: "Padmé Amidala" },
+        { question: "What is the language of the Wookiees?", answer: "Shyriiwook" },
+        { question: "Who freed Han from the carbonite?", answer: "Princess Leia" },
+        { question: "Who said, \"Feel. Do not think. Trust your instincts\"?", answer: "Qui-Gon Jinn" },
+        { question: "How old was Padmé when she was elected the Queen of Naboo?", answer: "14" },
+        { question: "According to Chancellor Palpatine, what does Anakin's rage do to him?", answer: "It gives him focus and makes him stronger." },
+        { question: "Whose lightsaber did Luke receive from Obi-Wan?", answer: "Anakin Skywalker's" },
+        { question: "How old was Yoda when Luke returned to Dagobah to complete his training?", answer: "900 years old" },
+        { question: "Who told Rey, \"I am no Jedi, but I know the Force\"?", answer: "Maz Kanata" },
+        { question: "Why was Jango Fett adopted and raised by Mandalorians?", answer: "His parents were assassinated." },
+        { question: "What reason did Luke give to Yoda for wanting to become a Jedi?", answer: "Because of his father" },
+        { question: "What did Anakin say Padmé resembled when she questioned the state of the Republic?", answer: "A Separatist" },
+        { question: "According to Obi-Wan, what is a lightsaber to a Jedi?", answer: "Their life" },
+        { question: "What was Obi-Wan's final promise to Qui-Gon Jinn?", answer: "To find a Padawan that deserved his training" },
+        { question: "What is Kylo Ren's given name?", answer: "Ben" },
+        { question: "What nightmare did Anakin have that triggered his turn to the dark side?", answer: "He dreamed that Padmé died in childbirth." },
+        { question: "Who told Luke that there was another Skywalker?", answer: "Yoda" },
+        { question: "Who directed Return of the Jedi?", answer: "Richard Marquand" },
+        { question: "What species is Jabba?", answer: "Hutt" },
+        { question: "What did Han call the Kanjiklub?", answer: "Little freaks" },
+        { question: "How did the Jedi elders feel about Anakin adopting a dark uniform?", answer: "They were worried." },
+        { question: "Where did Princess Leia get shot while trying to invade the bunker on Endor?", answer: "In the left shoulder" },
+        { question: "On what planet did Han accept Chewbacca as his partner?", answer: "Devaron" },
+        { question: "How did Obi-Wan feel about flying?", answer: "He hated it." },
+        { question: "What was the cell number where Princess Leia was imprisoned?", answer: "2187" },
+        { question: "Which planet was Darth Vader raised on?", answer: "Tatooine" }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    // Shuffle the quiz data
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Start the quiz
+    shuffle(quizData);
+    showQuestion();
+
+    function showQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.innerText = quizData[currentQuestionIndex].question;
+        answerContainer.innerText = "Loading answer...";
+
+        // Fade in effect
+        answerContainer.classList.remove("fadeIn");
+        answerContainer.classList.add("fadeOut");
+
+        setTimeout(() => {
+            answerContainer.innerText = quizData[currentQuestionIndex].answer;
+            answerContainer.classList.remove("fadeOut");
+            answerContainer.classList.add("fadeIn");
+        }, 500);
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            showQuestion();
+        } else {
+            const questionContainer = document.getElementById("question");
+            const answerContainer = document.getElementById("answer");
+            questionContainer.innerText = "Thank you for playing!";
+            answerContainer.innerText = "";
+            document.getElementById("next-button").style.display = "none"; // Hide the next button
+        }
+    }
+</script>
+
+</body>
+</html>
